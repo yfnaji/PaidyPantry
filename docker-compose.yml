@@ -1,0 +1,44 @@
+services:
+  db:
+    build:
+      context: ./db
+    container_name: pantry_db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+
+  server:
+    build:
+      context: ./server
+    container_name: pantry_server
+    environment:
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      RUST_LOG: info
+
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  client:
+    build:
+      context: ./client
+    environment:
+      SERVER_HOST: pantry_server
+    stdin_open: true
+    tty: true
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
