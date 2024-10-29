@@ -1,0 +1,5 @@
+FROM i386/debian:buster-slim
+WORKDIR /app
+COPY target/i686-unknown-linux-gnu/release/server .
+EXPOSE 8080
+CMD ["./server"]
