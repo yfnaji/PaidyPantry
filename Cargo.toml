@@ -1,0 +1,29 @@
+[package]
+name = "paidy_pantry"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+actix-web = "4.9"
+serde_json = "1.0.132"
+reqwest = { version = "0.12.8", features = ["blocking", "json"] }
+tokio = { version = "1.41.0", features = ["full"] }
+polars = "0.44.0"
+rand = "0.8.5"
+tokio-postgres = "0.7.12"
+deadpool-postgres = "0.14.0"
+indexmap = "2.6.0"
+dotenvy = "0.15.7"
+env_logger="0.11.5"
+mockall="0.13.0"
+async-trait="0.1.83"
+log="0.4.22"
+openssl = { version = "0.10.68", features = ["vendored"] }
+
+[[bin]]
+name = "server"
+path = "server/src/main.rs"
+
+[[bin]]
+name = "client"
+path = "client/src/main.rs"
