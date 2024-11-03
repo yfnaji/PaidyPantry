@@ -1,11 +1,10 @@
 #[cfg(test)]
 mod tests {
-    use tokio_postgres::NoTls;
-    use deadpool_postgres::Config;
     use std::sync::Arc;
     use std::collections::HashMap;
-    use indexmap::IndexMap;
+    use tokio_postgres::NoTls;
     use tokio::sync::RwLock;
+    use deadpool_postgres::Config;
     use deadpool_postgres::{Pool, Runtime};
     use async_trait::async_trait;
     use actix_web::{body::to_bytes, http::StatusCode, web, App, HttpResponse};
@@ -18,7 +17,7 @@ mod tests {
 
     // Struct for mocking successful queries
     struct MockSQLExecutor;
-        // Struct for mocking failed queries
+    // Struct for mocking failed queries
     struct MockBadSQLExecutor;
 
     // SQLExecutor trait for mocking successful queries
@@ -62,7 +61,7 @@ mod tests {
             config.host = Some("host".to_string());
             config.port = Some(5432);
         let pool = config.create_pool(Some(Runtime::Tokio1), NoTls).unwrap();
-        let cache: Cache = Arc::new(RwLock::new(IndexMap::new()));
+        let cache: Cache = Arc::new(RwLock::new(HashMap::new()));
         let db_executor: Arc<dyn SQLExecutor + Send + Sync> = Arc::new(MockSQLExecutor);
         web::Data::new(AppState {db_pool: pool, cache, db_executor})
     }
@@ -77,7 +76,7 @@ mod tests {
             config.port = Some(5432);
         let db_pool = config.create_pool(Some(Runtime::Tokio1), NoTls).unwrap();
         let db_executor: Arc<dyn SQLExecutor + Send + Sync> = Arc::new(MockBadSQLExecutor);
-        let cache: Cache = Arc::new(RwLock::new(IndexMap::new()));
+        let cache: Cache = Arc::new(RwLock::new(HashMap::new()));
         web::Data::new(AppState { db_pool, cache, db_executor })
     }
 
