@@ -4,11 +4,11 @@ mod utils;
 
 use std::env;
 use std::sync::Arc;
+use std::collections::HashMap;
 use actix_web::{App, HttpServer, web};
+use tokio::sync::RwLock;
 use deadpool_postgres::{ManagerConfig, RecyclingMethod, Config, Runtime};
 use tokio_postgres::NoTls;
-use indexmap::IndexMap;
-use tokio::sync::RwLock;
 use handlers::routes as rt;
 use utils::sql_executor::{SQLExecutor, ProdSQLExecutor};
 use utils::app_state::{AppState, Cache};
@@ -39,7 +39,7 @@ pub async fn main() -> std::io::Result<()> {
     });
 
     let db_pool = config.create_pool(Some(Runtime::Tokio1), NoTls).unwrap();
-    let cache: Cache = Arc::new(RwLock::new(IndexMap::new()));
+    let cache: Cache = Arc::new(RwLock::new(HashMap::new()));
     let db_executor: Arc<dyn SQLExecutor + Send + Sync> = Arc::new(ProdSQLExecutor);
     let app_state: AppState = AppState { db_pool, db_executor, cache };
 
