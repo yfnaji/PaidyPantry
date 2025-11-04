@@ -21,9 +21,3 @@ After running `./stop.sh`, you may restart the server and database by running `.
 ### Unit tests
 
 To run all unit tests, run `cargo test --manifest-path server/Cargo.toml`.
-
-### Edits 2024/11/3
-* Remove `Cargo.toml` from root directory and create individual toml files for client and server apps
-* Amend data structure of cache from `IndexMap` to `HashMap` (and amend unit tests accordingly)
-* Database configured to only accept table number (`table_no`) values between 1 - 100
-* Include ports used by server and database in `README.md` and amend instruction for running unit tests
